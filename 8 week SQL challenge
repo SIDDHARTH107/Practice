@@ -16,3 +16,21 @@ SELECT customer_id,
        COUNT(DISTINCT order_date)
 FROM sales
 GROUP BY 1
+
+3. What was the first item from the menu purchased by each customer?
+
+WITH first_purchase AS (
+  SELECT s.customer_id,
+         s.product_id,
+         s.order_date,
+         ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.order_date, s.product_id) AS rn
+  FROM sales AS s
+)
+SELECT fp.customer_id,
+       m.product_name,
+       fp.order_date
+FROM first_purchase AS fp
+INNER JOIN menu AS m
+  ON fp.product_id = m.product_id
+WHERE fp.rn = 1
+ORDER BY fp.customer_id;
