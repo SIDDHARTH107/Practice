@@ -43,6 +43,21 @@ GROUP BY 1
 ORDER BY cnt DESC
 LIMIT 1
 
+5. Which item was the most popular for each customer?
+
+WITH mycte AS
+(
+SELECT customer_id, 
+       product_id,
+       COUNT(*) AS cnt,
+       RANK() OVER(PARTITION BY customer_id ORDER BY COUNT(*) DESC) AS rnk
+ FROM sales
+ GROUP BY 1, 2
+ ORDER BY customer_id, cnt DESC
+ )
+ SELECT *
+ FROM mycte
+ WHERE rnk = 1
 
 
 
