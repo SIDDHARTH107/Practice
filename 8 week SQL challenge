@@ -59,5 +59,15 @@ SELECT customer_id,
  FROM mycte
  WHERE rnk = 1
 
+6. Which item was purchased first by the customer after they became a member?
 
+SELECT *
+FROM sales
+WHERE order_date = '2021-01-10'
+
+UNION ALL
+
+SELECT *
+FROM sales
+WHERE order_date = '2021-01-11'
 
